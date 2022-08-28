@@ -4,7 +4,7 @@ _G.ffi = require("ffi")
 _G.captura = 0
 _G.posicao = 0
 _G.altura = 0
-_G.distancia = -92
+_G.distancia = -96
 _G.click = false
 _G.bindzinha = 2
 _G.lista = {{"M4", 5}, {"M5", 6}}
@@ -85,19 +85,13 @@ function initialize_window() -- Captura de tela
     return 1
 end
 
-function script_update(settings)
-    bindzinha = pegar_key(obs.obs_data_get_string(settings, "bindzinha"))
-    distancia = obs.obs_data_get_int(settings, "distancia")
-end
-
-function script_defaults(settings)
-    obs.obs_data_set_default_string(settings, "bindzinha", lista[bindzinha][1])
-    obs.obs_data_set_default_int(settings, "distancia", distancia)
+function script_update(config)
+    bindzinha = pegar_key(obs.obs_data_get_string(config, "bindzinha"))
 end
 
 local function cor(red, green, blue) -- Cor que ele vai puxar
     if green >= 43 then
-       return math.abs(red - blue) <= 17 and red - green >= 63 and blue - green >= 66 and red >= 110 and blue >= 108;
+       return math.abs(red - blue) <= 8 and red - green >= 17 and blue - green >= 22 and red >= 78 and blue >= 87;
     end
  end
 
@@ -118,7 +112,7 @@ function script_tick(seconds)
         local achou = false
 
         for y = -3, 4, 1 do
-            for x = -1, 1, 1 do
+            for x = -1, 2, 1 do
                 local pixelzin = ffi.C.GetPixel(captura, posicao + x, altura + y + distancia)
                 if cor(Vermelhao(pixelzin), Verdao(pixelzin), Azulzao(pixelzin)) then -- Ele vai procurar a combinação de cores e caso encontre ele vai prosseguir
                     achou = true
